@@ -17,10 +17,16 @@ help:
 	@echo "  make run-all          # Run both services in parallel (background)"
 	@echo "  make prep             # Prepare project for git push"
 
-install:
+install-macos:
 	python3.11 -m venv .venv
 	$(PIP) install --upgrade pip setuptools wheel
 	$(PIP) install -r requirements.txt
+
+install-debian:
+	$(brew --prefix)/opt/python@3.11/bin/python3.11 -m venv .venv
+	source .venv/bin/activate
+	pip install --upgrade pip setuptools wheel
+	pip install -r requirements.txt
 
 clean:
 	rm -rf .venv
