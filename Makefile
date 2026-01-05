@@ -5,7 +5,7 @@ UVICORN ?= $(PYTHON) -m uvicorn
 USER_SERVICE_DIR := services/user_service
 QUIZ_SERVICE_DIR := services/quiz_service
 
-.PHONY: help install clean check lint run-user run-quiz run-all
+.PHONY: help install-macos install-debian clean check lint run-user run-quiz run-all
 
 help:
 	@echo "Available commands:"
@@ -23,10 +23,9 @@ install-macos:
 	$(PIP) install -r requirements.txt
 
 install-debian:
-	$(brew --prefix)/opt/python@3.11/bin/python3.11 -m venv .venv
-	source .venv/bin/activate
-	pip install --upgrade pip setuptools wheel
-	pip install -r requirements.txt
+	$(shell brew --prefix)/opt/python@3.11/bin/python3.11 -m venv .venv
+	$(PIP) install --upgrade pip setuptools wheel
+	$(PIP) install -r requirements.txt
 
 clean:
 	rm -rf .venv
@@ -47,7 +46,3 @@ run-all:
 	$(UVICORN) $(USER_SERVICE_DIR)/app.main:app --reload --port 8000 & \
 	$(UVICORN) $(USER_SERVICE_DIR)/app.main:app --reload --port 8001 & \
 	wait
-
-prep:
-	$(MAKE) check
-	
